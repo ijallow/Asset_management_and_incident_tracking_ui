@@ -1,0 +1,168 @@
+<template>
+  <v-app id="inspire" >
+    <v-navigation-drawer v-model="drawer" >
+      <v-list-item >
+        <v-list-item-content >
+          <v-list-item-title class="text-h6" >
+            Asset Management &
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            Incident Tracking
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list
+          dense
+          nav
+      >
+        <v-list-item
+            v-for="item in items"
+            :key="item.title"
+            :to="item.to"
+            link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+          <!-- dropdown menu -->
+          <v-list-item v-for="(child, i) in item.children" :key="i">
+            <router-link :to="{path: child.link}">
+              <v-list-item-icon>
+                <v-icon>{{ child.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-content>
+                <v-list-item-title>{{ child.title }}</v-list-item-title>
+              </v-list-content>
+            </router-link>
+          </v-list-item>
+        </v-list-item>
+      </v-list>
+
+      <template v-slot:append>
+        <div class="pa-2" >
+          <v-btn block color="error" @click="logout">
+            Logout
+          </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
+
+    <v-app-bar app >
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Asset Management</v-toolbar-title>
+    </v-app-bar>
+
+    <v-main>
+      <RouterView />
+    </v-main>
+  </v-app>
+
+</template>
+
+<template>
+  <v-app id="inspire" >
+    <v-navigation-drawer v-model="drawer">
+      <v-card class="mx-auto" width="100%">
+        <v-img class="ml-15 mt-1 mb-1" max-width="35%" src="../../../src/assets/GPA LOGO.png"></v-img>
+        <v-divider></v-divider>
+        <v-list-item class="mt-2">
+          <v-list-item-content>
+            <v-list-item-title class="text-h6">
+              Asset Management &
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              Incident Tracking
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+        <v-list>
+          <v-list-item>
+            <v-icon></v-icon>
+          </v-list-item>
+          <!-- <v-list-item prepend-icon="mdi-home" title="Dashboard" :to="{path: '/dashboard'}"></v-list-item> -->
+          <v-list-item prepend-icon="mdi-home" title="Assets" to="Assets"></v-list-item>
+          <v-list-item prepend-icon="mdi-home" title="Incidents" to="Incidents"></v-list-item>
+
+          <!-- <v-list-group value="Users">
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props" prepend-icon="mdi-account-circle" title="Users"></v-list-item>
+            </template>
+
+            <v-list-group value="Admin">
+              <template v-slot:activator="{ props }">
+                <v-list-item v-bind="props" title="Admin"></v-list-item>
+              </template>
+
+              <v-list-item v-for="([title, icon], i) in admins" :key="i" :title="title" :prepend-icon="icon"
+                :value="title"></v-list-item>
+            </v-list-group>
+
+            <v-list-group value="Actions">
+              <template v-slot:activator="{ props }">
+                <v-list-item v-bind="props" title="Actions"></v-list-item>
+              </template>
+
+              <v-list-item v-for="([title, icon], i) in cruds" :key="i" :value="title" :title="title"
+                :prepend-icon="icon"></v-list-item>
+            </v-list-group>
+          </v-list-group> -->
+        </v-list>
+      </v-card>
+      <!-- <template v-slot:append>
+        <div class="pa-2" >
+          <v-btn block color="error" @click="logout">
+            Logout
+          </v-btn>
+        </div>
+      </template> -->
+      <!--  -->
+    </v-navigation-drawer>
+
+    <v-app-bar :clippedfa-left="$vuetify.breakpoint.lgAndUp">
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Asset Management</v-toolbar-title>
+    </v-app-bar>
+
+    <v-main>
+      <!--  -->
+      <RouterView />
+    </v-main>
+  </v-app>
+</template>
+
+<script>
+import router from '../../router/router';
+export default {
+  data: () => ({
+    drawer: null,
+    open: ['Users'],
+    admins: [
+      ['Management', 'mdi-account-multiple-outline'],
+      ['Settings', 'mdi-cog-outline'],
+    ],
+    cruds: [
+      ['Create', 'mdi-plus-outline'],
+      ['Read', 'mdi-file-outline'],
+      ['Update', 'mdi-update'],
+      ['Delete', 'mdi-delete'],
+    ],
+  }),
+  methods: {
+    logout(){
+      this.$store.dispatch('logout')
+      router.push('login')
+    }
+  }
+}
+</script>
